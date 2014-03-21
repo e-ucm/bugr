@@ -1,6 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
 
-// Connect to the db
+// Connect to the db before starting the server
 MongoClient.connect("mongodb://localhost:27017/bugs", function(
     err, database) {
     if (err) {
@@ -42,6 +42,7 @@ MongoClient.connect("mongodb://localhost:27017/bugs", function(
         if (app.get('env') === 'production') {}
 
         app.post('/api/bug', api.bug);
+        app.post('/reports.php', api.bugLegacy);
         // Start Server
         http.createServer(app).listen(app.get('port'), function() {
             console.log('Express server listening on port ' + app.get('port'));
