@@ -27,6 +27,7 @@ MongoClient.connect("mongodb://localhost:27017/bugs", function(
 
         // Set api
         app.post('/api/bug', api.bug);
+        app.post('/api/activate', api.activate);
         app.post('/reports.php', api.bugLegacy);
 
         // Start Server
