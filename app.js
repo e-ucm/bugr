@@ -6,11 +6,6 @@ MongoClient.connect("mongodb://localhost:27017/bugs", function(
     if (err) {
         console.log('Impossible to start database: ' + err.stack);
     } else {
-
-        /**
-         * Module dependencies
-         */
-
         var express = require('express'),
             routes = require('./routes'),
             api = require('./routes/api')(databse),
@@ -19,12 +14,8 @@ MongoClient.connect("mongodb://localhost:27017/bugs", function(
 
         var app = module.exports = express();
 
-        /**
-         * Configuration
-         */
-
-        // all environments
-        app.set('port', process.env.PORT || 3000);
+        // Express configuration
+        app.set('port', process.env.PORT || 80);
         app.set('views', __dirname + '/views');
         app.set('view engine', 'jade');
         app.use(express.logger('dev'));
@@ -32,17 +23,13 @@ MongoClient.connect("mongodb://localhost:27017/bugs", function(
         app.use(express.methodOverride());
         app.use(express.static(path.join(__dirname, 'public')));
         app.use(app.router);
+        app.use(express.errorHandler());
 
-        // development only
-        if (app.get('env') === 'development') {
-            app.use(express.errorHandler());
-        }
 
-        // production only
-        if (app.get('env') === 'production') {}
-
+        // Set api
         app.post('/api/bug', api.bug);
         app.post('/reports.php', api.bugLegacy);
+
         // Start Server
         http.createServer(app).listen(app.get('port'), function() {
             console.log('Express server listening on port ' + app.get('port'));
