@@ -7,8 +7,7 @@ MongoClient.connect("mongodb://localhost:27017/bugs", function(
         console.log('Impossible to start database: ' + err.stack);
     } else {
         var express = require('express'),
-            routes = require('./routes'),
-            api = require('./routes/api')(databse),
+            api = require('./routes/api')(database),
             http = require('http'),
             path = require('path');
 
@@ -31,6 +30,7 @@ MongoClient.connect("mongodb://localhost:27017/bugs", function(
         app.post('/reports.php', api.bugLegacy);
 
         // Start Server
+        console.log('Trying to start server in port ' + app.get('port'));
         http.createServer(app).listen(app.get('port'), function() {
             console.log('Express server listening on port ' + app.get('port'));
         });
