@@ -1,0 +1,34 @@
+<html>
+<head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script>
+        google.load('visualization', '1', {'packages': ['map']});
+        google.setOnLoadCallback(drawMap);
+
+        function drawMap() {
+
+            $.get('/data/activations', function (result) {
+                $('#counter').text(result.length + ' activations.');
+                var arrayData = [['Lat', 'Long', 'Name']];
+                result.forEach(function (activation) {
+                    if (activation.lat && activation.long) {
+                        arrayData.push([activation.lat, activation.long, activation.guid]);
+                    }
+                });
+
+                var data = google.visualization.arrayToDataTable(arrayData);
+                var options = {
+                    showTip: true
+                };
+                var map = new google.visualization.Map(document.getElementById('chart_div'));
+                map.draw(data, options);
+            });
+        }
+    </script>
+</head>
+<body>
+<div id="counter"></div>
+<div id="chart_div"></div>
+</body>
+</html>
